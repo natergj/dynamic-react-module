@@ -1,0 +1,14 @@
+version: '3'
+services:
+  app-loader:
+    build: ./app-loader
+  app-module-1:
+    build: ./app-module-1
+  app-module-2:
+    build: ./app-module-2
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro

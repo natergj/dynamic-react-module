@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% const systemJsAssetMap = webpack.assets.reduce((prev, lib) => {
+      if (lib.name.startsWith('system-production')) {
+        prev.systemJsSrc = lib.name;
+      }
+      if (lib.name.startsWith('vendorBundle')) {
+        prev.vendorSrc = lib.name;
+      }
+      return prev;
+    }, {}); %>
+  <script src="<%= systemJsAssetMap.systemJsSrc %>"></script>
+  <script src="<%= systemJsAssetMap.vendorSrc %>"></script>
+  <% htmlWebpackPlugin.files.css.forEach((asset) => { %>
+  <link rel="stylesheet" href="<%= asset %>" />  
+  <% }) %>
+</head>
+<body>
+  <script>
+    System.config({
+      map: <%= JSON.stringify(htmlWebpackPlugin.options.systemJsExternalsMap) %>
+    });
+    System.import("<%= htmlWebpackPlugin.files.chunks.index.entry %>")
+    .then((module) => {
+      module.Run();
+    });
+  </script>
+  <div id="application-root" />
+</body>
+</html>
