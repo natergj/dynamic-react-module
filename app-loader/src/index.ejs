@@ -11,21 +11,24 @@
       return prev;
     }, {}); %>
   <script src="<%= systemJsAssetMap.systemJsSrc %>"></script>
-  <script src="<%= systemJsAssetMap.vendorSrc %>"></script>
   <% htmlWebpackPlugin.files.css.forEach((asset) => { %>
   <link rel="stylesheet" href="<%= asset %>" />  
   <% }) %>
 </head>
 <body>
+  <script src="<%= htmlWebpackPlugin.files.chunks.antd.entry %>"></script>
+  <script src="<%= htmlWebpackPlugin.files.chunks.moment.entry %>"></script>
+  <script src="<%= htmlWebpackPlugin.files.chunks['react'].entry %>"></script>
+  <script src="<%= htmlWebpackPlugin.files.chunks['react-dom'].entry %>"></script>
+  <script src="<%= htmlWebpackPlugin.files.chunks['react-router-dom'].entry %>"></script>
+  <script src="<%= htmlWebpackPlugin.files.chunks['react-router'].entry %>"></script>
+  <script src="<%= htmlWebpackPlugin.files.chunks.loader.entry %>"></script>
+  <div id="application-root" />
   <script>
-    System.config({
-      map: <%= JSON.stringify(htmlWebpackPlugin.options.systemJsExternalsMap) %>
-    });
-    System.import("<%= htmlWebpackPlugin.files.chunks.index.entry %>")
-    .then((module) => {
-      module.Run();
+    System.import('loader').then((loader) => {
+      console.log(loader);
+      loader.Run();
     });
   </script>
-  <div id="application-root" />
 </body>
 </html>
