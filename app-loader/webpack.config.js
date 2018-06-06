@@ -73,14 +73,14 @@ module.exports = {
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
     hot: false,
-    port: 8085,
+    port: 8050,
     proxy: {
       '/app-module-1': {
-        target: 'http://127.0.0.1:8081',
+        target: 'http://127.0.0.1:8051',
         pathRewrite: {"^/app-module-1" : "" },
       },
       '/app-module-2': {
-        target: 'http://127.0.0.1:8082',
+        target: 'http://127.0.0.1:8052',
         pathRewrite: {"^/app-module-2" : "" },
       },
     }

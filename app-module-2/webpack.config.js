@@ -37,11 +37,8 @@ module.exports = {
     ],
   },
   devServer: {
-    port: 8082,
+    port: 8052,
     contentBase: path.join(__dirname, 'dist'),
-    publicPath: "/app-module-2/",
-    proxy: {
-      '/': 'http://localhost:8080'
-    }
+    hot: false,
   }
 }
