@@ -1,7 +1,13 @@
 import * as React from 'react';
 import { NavLink, Route } from 'react-router-dom';
-import { Button, Icon, Layout, Menu } from 'antd';
+import { Button, Icon, Layout, Menu, Tooltip } from 'antd';
 const { Header, Content, Footer, Sider } = Layout;
+
+const defaultComponent = () => (
+  <div>
+    <Tooltip title="MainComponent">Default Component</Tooltip>
+  </div>
+)
 
 export default class MainLayout extends React.Component<any, any> {
   state = {
@@ -9,7 +15,7 @@ export default class MainLayout extends React.Component<any, any> {
     currentRoute: null,
     currentModuleBaseRoute: null,
     currentModuleBasePath: null,
-    currentModule: () => <div />
+    currentModule: defaultComponent,
   };
 
   onCollapse = (collapsed) => {
@@ -32,6 +38,9 @@ export default class MainLayout extends React.Component<any, any> {
 
   loadModule(path) {
     const baseRoute = `/${path.split('/')[1]}`;
+    if (baseRoute === '/') {
+      return;
+    }
     const basePath = `${baseRoute}/index.js`;
     SystemJS.import(basePath)
     .then((module) => {

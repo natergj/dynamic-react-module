@@ -6,7 +6,7 @@
   "scripts": {
     "build": "NODE_ENV=production webpack -p",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "NODE_ENV=production webpack-dev-server"
+    "watch": "NODE_ENV=development webpack-dev-server"
   },
   "author": "",
   "license": "MIT",
@@ -30,7 +30,7 @@
     "webpack-dev-server": "3.1.4"
   },
   "dependencies": {
-    "antd": "3.5.4",
+    "antd": "2.13.14",
     "react": "16.4.0",
     "react-dom": "16.4.0",
     "react-router": "4.2.0",

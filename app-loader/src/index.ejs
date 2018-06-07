@@ -10,25 +10,17 @@
       }
       return prev;
     }, {}); %>
-  <script src="<%= systemJsAssetMap.systemJsSrc %>"></script>
   <% htmlWebpackPlugin.files.css.forEach((asset) => { %>
   <link rel="stylesheet" href="<%= asset %>" />  
   <% }) %>
 </head>
 <body>
-  <script src="<%= htmlWebpackPlugin.files.chunks.antd.entry %>"></script>
-  <script src="<%= htmlWebpackPlugin.files.chunks.moment.entry %>"></script>
-  <script src="<%= htmlWebpackPlugin.files.chunks['react'].entry %>"></script>
-  <script src="<%= htmlWebpackPlugin.files.chunks['react-dom'].entry %>"></script>
-  <script src="<%= htmlWebpackPlugin.files.chunks['react-router-dom'].entry %>"></script>
-  <script src="<%= htmlWebpackPlugin.files.chunks['react-router'].entry %>"></script>
-  <script src="<%= htmlWebpackPlugin.files.chunks.loader.entry %>"></script>
+  <script src="system.js"></script>
+  <script src="jspm.config.js"></script>
+  <script src="bundle.js"></script>
   <div id="application-root" />
   <script>
-    System.import('loader').then((loader) => {
-      console.log(loader);
-      loader.Run();
-    });
+    SystemJS.import("<%= htmlWebpackPlugin.files.chunks.loader.entry %>");
   </script>
 </body>
 </html>

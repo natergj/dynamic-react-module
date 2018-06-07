@@ -36,6 +36,13 @@ module.exports = {
       },
     ],
   },
+  plugins: [
+    new webpack.ProvidePlugin({
+      react: 'react',
+      'react-dom': 'react-dom',
+      'antd': 'antd',
+    })
+  ],
   devServer: {
     port: 8051,
     contentBase: path.join(__dirname, 'dist'),

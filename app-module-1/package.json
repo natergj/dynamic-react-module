@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "build": "NODE_ENV=production webpack -p",
+    "build:dev": "NODE_ENV=development webpack",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "webpack-dev-server"
+    "watch": "NODE_ENV=development webpack-dev-server"
   },
   "author": "",
   "license": "MIT",
@@ -25,7 +26,8 @@
     "typescript": "2.8.3",
     "webpack": "4.8.3",
     "webpack-cli": "2.1.4",
-    "webpack-dev-server": "3.1.4"
+    "webpack-dev-server": "3.1.4",
+    "webpack-system-register": "1.6.0"
   },
   "dependencies": {
     "antd": "3.5.4",

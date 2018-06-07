@@ -10,20 +10,15 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 module.exports = {
   entry: {
     loader: './src/index.tsx',
-    antd: 'antd',
-    moment: 'moment',
-    react: 'react',
-    'react-dom': 'react-dom',
-    'react-router-dom': 'react-router-dom',
-    'react-router': 'react-router',
   },
+  externals: ['react', 'react-dom', 'react-router-dom'],
   performance: { hints: false },
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].[contenthash].js',
     library: '[name]',
-    libraryTarget: 'amd',
+    libraryTarget: 'umd'
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
@@ -36,7 +31,7 @@ module.exports = {
           to: '[name].[hash].[ext]',
           toType: 'template',
           force: true,
-        }
+        },
       ],
       { copyUnmodified: true },
     ),
