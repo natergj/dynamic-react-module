@@ -48,12 +48,16 @@ module.exports = {
   devServer: {
     port: 8051,
     contentBase: path.join(__dirname, 'dist'),
-    hot: false,
-    inline: false,
+    hot: false, // Project is not compatible with the HMR implementation of webpack dev server
+    inline: false, // Don't inline the HMR code as it is not compatible
     publicPath: '/app-module-1',
     before(app) {
+      // serve up sockjs code to be used by our manual HMR process
       app.use('/sockjs.min.js', express.static(path.join(__dirname, 'node_modules/sockjs-client/dist/sockjs.min.js')));
     },
+    // When developing, we need to proxy the code for the app-loader so that this app module can be loaded
+    // We also want to inject some javascript that will handle the update events from webpack dev server and reload
+    // our current app module.
     proxy: {
       '/': {
         target: 'http://localhost:8080',
@@ -67,6 +71,7 @@ module.exports = {
               responseHTML += data;
             });
             res.write = () => {
+              // Use cheerio to inject code into specific parts of the proxied response when requesting the index.html file
               const $ = cheerio.load(responseHTML);
               $('head').append('<script src="sockjs.min.js"></script>');
               $('body').append(`

@@ -46,6 +46,8 @@ module.exports = (env = process.env.NODE_ENV || 'production') => {
   };
 }
 
+// Custom webpack plugin to write information about the output of this
+// compiler process to a json file that can be read by other compiler processes.
 class ManifestPlugin {
   constructor(options = {}) {
     const {
@@ -77,6 +79,7 @@ class ManifestPlugin {
   }
 }
 
+// Custom webpack plugin to take all entry points and squash the code into single file.
 class SquashBundlePlugin {
   constructor(options) {
     this.name = options.name ? options.name : 'vendor';
@@ -101,6 +104,7 @@ class SquashBundlePlugin {
   }
 }
 
+// Custom webpack plugin to create a SystemJS bundle of react and react-dom so they can be loaded as ES6 modules
 class SystemJsBundlerPlugin {
   constructor(options) {
     const bundlerPath = path.resolve(__dirname, 'scripts/build/SystemJsBundler.js');

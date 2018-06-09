@@ -1,8 +1,5 @@
 const path = require('path');
 const fs = require('fs');
-const child_process = require('child_process');
-const os = require('os');
-const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -11,6 +8,7 @@ module.exports = (env) => ({
   entry: {
     loader: './src/index.tsx',
   },
+  // externals are libraries provided to the web application so they don't need to bundle them in the final package
   externals: ['react', 'react-dom', 'antd', 'moment', 'react-router', 'react-router-dom'],
   performance: {
     hints: false
@@ -20,12 +18,13 @@ module.exports = (env) => ({
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].[contenthash].js',
     library: '[name]',
-    libraryTarget: 'amd'
+    libraryTarget: 'amd' // Package individual apps as AMD modules to be loaded by SystemJS
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
   },
   plugins: [
+    // Copy some libraries that we just need to include without any modifications
     new CopyWebpackPlugin(
       [{
         from: 'node_modules/systemjs/dist/system-production.js',
@@ -51,6 +50,8 @@ module.exports = (env) => ({
       filename: '[name].[contenthash].css',
       chunkFilename: '[id].[contenthash].css',
     }),
+    // Our externals need to be bundled as well, this is done via a prebuild NPM script so that it only needs to be done once when working on the project.
+    // prebuild step runs the webpack.deps.config.js config which writes a JSON file to depManifest.json so that other webpack compiler processes can access the output.
     new LoadDependencyManifestPlugin({
       manifestFile: 'depManifest.json',
     }),
@@ -97,6 +98,7 @@ module.exports = (env) => ({
   }
 });
 
+// Custom Webpack Plugin to query for assets built via the prebuild npm script
 class LoadDependencyManifestPlugin {
   constructor(options = {}) {
     this.manifestFile = options.manifestFile;
