@@ -4,8 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "prebuild": "npm run build-dep",
     "build": "NODE_ENV=production webpack -p",
+    "build-dep": "webpack --config webpack.deps.config.js",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "prewatch": "npm run build-dep",
     "watch": "NODE_ENV=development webpack-dev-server"
   },
   "author": "",
@@ -23,6 +26,7 @@
     "less-loader": "4.1.0",
     "mini-css-extract-plugin": "0.4.0",
     "systemjs": "0.21.3",
+    "systemjs-builder": "0.16.13",
     "ts-loader": "4.3.0",
     "typescript": "2.8.3",
     "webpack": "4.8.3",
@@ -31,6 +35,7 @@
   },
   "dependencies": {
     "antd": "2.13.14",
+    "babel-polyfill": "6.26.0",
     "react": "16.4.0",
     "react-dom": "16.4.0",
     "react-router": "4.2.0",

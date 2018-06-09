@@ -4,9 +4,11 @@ import { HashRouter, Route } from 'react-router-dom';
 import MainLayout from './MainLayout';
 import './index.less';
 
-render(
-  <HashRouter>
-    <Route path="/" component={MainLayout}/>
-  </HashRouter>,
-  document.getElementById('application-root'),
-);
+export const Run = () => {
+  render(
+    <HashRouter>
+      <Route path="/" component={MainLayout}/>
+    </HashRouter>,
+    document.getElementById('application-root'),
+  );
+}

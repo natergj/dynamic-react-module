@@ -9,9 +9,11 @@ COPY tsconfig.json .
 COPY tsconfig.dev.json .
 COPY tsconfig.prod.json .
 COPY webpack.config.js .
+COPY webpack.deps.config.js .
 COPY scripts scripts
 COPY src src
 
+ENV NODE_ENV=production
 RUN npm run build
 
 FROM nginx:1.13.8-alpine
