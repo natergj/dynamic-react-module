@@ -68,6 +68,7 @@ export default class MainLayout extends React.Component<any, any> {
 
   render() {
     return (
+      <div id="hot-reload-target">
       <Layout style={{ minHeight: '100vh' }}>
         <Header style={{ background: '#fff', padding: 0 }}>
           <span>Header Text</span>
@@ -98,6 +99,7 @@ export default class MainLayout extends React.Component<any, any> {
           </Content>
         </Layout>
       </Layout>
+      </div>
     )
   }
 }

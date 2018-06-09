@@ -6,7 +6,7 @@
   "scripts": {
     "build": "NODE_ENV=production webpack -p",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "webpack-dev-server"
+    "watch": "NODE_ENV=development webpack-dev-server"
   },
   "author": "",
   "license": "MIT",
@@ -15,6 +15,7 @@
     "@types/react-dom": "16.0.6",
     "@types/react-router": "4.0.26",
     "@types/react-router-dom": "4.2.7",
+    "cheerio": "1.0.0-rc.2",
     "css-loader": "0.28.11",
     "less": "3.0.4",
     "less-loader": "4.1.0",

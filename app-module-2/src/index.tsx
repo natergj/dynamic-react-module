@@ -12,7 +12,3 @@ export class AppModule extends React.Component<any, any> {
     )
   };
 }
-
-function myRender() {
-  ReactDOM.render(<div/>, document.getElementById(''))
-}

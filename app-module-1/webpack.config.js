@@ -1,8 +1,6 @@
 const path = require('path');
-const fs = require('fs');
-const child_process = require('child_process');
-const os = require('os');
-const webpack = require('webpack');
+const express = require('express');
+const cheerio = require('cheerio');
 
 module.exports = {
   entry: {
@@ -24,7 +22,12 @@ module.exports = {
   module: {
     rules: [{
         test: /\.tsx?$/,
-        loader: 'ts-loader'
+        use: [{
+          loader: 'ts-loader',
+          options: {
+            configFile: process.env.NODE_ENV === 'production' ? 'tsconfig.prod.json' : 'tsconfig.dev.json',
+          }
+        }]
       },
       {
         test: /\.(css|less)$/,
@@ -42,16 +45,64 @@ module.exports = {
       },
     ],
   },
-  plugins: [
-    new webpack.ProvidePlugin({
-      react: 'react',
-      'react-dom': 'react-dom',
-      'antd': 'antd',
-    })
-  ],
   devServer: {
     port: 8051,
     contentBase: path.join(__dirname, 'dist'),
     hot: false,
+    inline: false,
+    publicPath: '/app-module-1',
+    before(app) {
+      app.use('/sockjs.min.js', express.static(path.join(__dirname, 'node_modules/sockjs-client/dist/sockjs.min.js')));
+    },
+    proxy: {
+      '/': {
+        target: 'http://localhost:8080',
+        onProxyRes: (proxyRes, req, res) => {
+          if (req.url === '/') {
+            var _write = res.write;
+            var output;
+            var responseHTML = "";
+            proxyRes.on('data', (data) => {
+              data = data.toString('utf-8');
+              responseHTML += data;
+            });
+            res.write = () => {
+              const $ = cheerio.load(responseHTML);
+              $('head').append('<script src="sockjs.min.js"></script>');
+              $('body').append(`
+              <script>
+                window.FindReact = function(dom) {
+                  for (let key in dom) {
+                    if (key.startsWith("__reactEventHandlers$")) {
+                      const compInternals = dom[key].children;
+                      const compWrapper = compInternals._owner;
+                      const comp = compWrapper.stateNode;
+                      return comp
+                    }
+                  }
+                  return null;
+                }
+                const wrapper = FindReact(document.getElementById('hot-reload-target'));
+                const sock = new SockJS('http://localhost:8051/sockjs-node');
+                sock.onmessage = function(e) {
+                  const msg = JSON.parse(e.data);
+                  if(msg.type === 'ok') {
+                    System.registry.delete('http://localhost:8051/app-module-1/index.js');
+                    wrapper.loadModule('/app-module-1');
+                  }
+                };
+              </script>
+              `);
+
+              const newResponseHTML = $.html();
+              res.set({
+                'content-length': newResponseHTML.length,
+              });
+              _write.call(res, newResponseHTML);
+            }
+          }
+        }
+      }
+    }
   }
 }
