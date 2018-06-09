@@ -5,8 +5,12 @@ const os = require('os');
 const webpack = require('webpack');
 
 module.exports = {
-  entry: { index: './src/index.tsx' },
-  performance: { hints: false },
+  entry: {
+    index: './src/index.tsx'
+  },
+  performance: {
+    hints: false
+  },
   externals: ['react', 'react-dom', 'antd', 'moment'],
   mode: process.env.NODE_ENV ? process.env.NODE_ENV : 'production',
   output: {
@@ -18,8 +22,10 @@ module.exports = {
     extensions: ['.ts', '.tsx', '.js'],
   },
   module: {
-    rules: [
-      { test: /\.tsx?$/, loader: 'ts-loader' },
+    rules: [{
+        test: /\.tsx?$/,
+        loader: 'ts-loader'
+      },
       {
         test: /\.(css|less)$/,
         use: [
@@ -29,7 +35,7 @@ module.exports = {
             loader: 'less-loader',
             options: {
               sourceMap: true,
-              inlineJavaScript: true,
+              javascriptEnabled: true,
             },
           },
         ],

@@ -69,7 +69,7 @@ module.exports = (env) => ({
             loader: 'less-loader',
             options: {
               sourceMap: true,
-              inlineJavaScript: true,
+              javascriptEnabled: true,
             },
           },
         ],
