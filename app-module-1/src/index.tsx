@@ -8,7 +8,7 @@ export class AppModule extends React.Component<any, any> {
     const matchedPath = this.props.match.path;
     return (
       <div id="app-module-1">
-        <h1>My Incredible App Module 2</h1>
+        <h1>My Incredible App Module 1</h1>
         <div>
           <Link to={`${matchedPath}/subpath1`}>SubRouteLink</Link> | 
           <Link to={`${matchedPath}/subpath2`}>SubRouteLink2</Link>
