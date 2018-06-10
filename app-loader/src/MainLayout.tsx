@@ -79,7 +79,7 @@ export default class MainLayout extends React.Component<any, any> {
             collapsed={this.state.collapsed}
             onCollapse={this.onCollapse}
           >
-            <Menu theme="dark" selectedKeys={[this.state.currentRoute]} mode="inline">
+            <Menu theme="dark" selectedKeys={[this.state.currentModuleBaseRoute]} mode="inline">
               <Menu.Item key="/app-module-1">
                 <NavLink to="/app-module-1">
                   <Icon type="desktop" />
