@@ -5,6 +5,6 @@
     "jsx": "react",
     "moduleResolution": "node",
     "noImplicitAny": false,
-    "target": "es2015"
+    "target": "es5"
   }
 }

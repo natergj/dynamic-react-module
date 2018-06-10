@@ -12,14 +12,14 @@
   <% }) %>
 </head>
 <body>
-  <div id="application-root" />
+  <div id="application-root"></div>
   <script src="<%= systemJsAssetMap['babel-polyfill'].name %>"></script>
   <script src="<%= systemJsAssetMap['system-production'].name %>"></script>
   <script src="<%= htmlWebpackPlugin.files.dependencyManifest.assets.reactBundle %>"></script>
   <script src="<%= htmlWebpackPlugin.files.dependencyManifest.assets.vendorBundle %>"></script>
   <script src="<%= htmlWebpackPlugin.files.chunks.loader.entry %>"></script>
   <script>
-    SystemJS.import('loader').then((loader) => {
+    SystemJS.import('loader').then(function(loader){
       loader.Run();
     });
   </script>

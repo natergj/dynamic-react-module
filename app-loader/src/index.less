@@ -1,5 +1,11 @@
 @import '~antd/dist/antd.less';
 
+// Fix for IE issue with flexbox
+.ant-layout:first-of-type {
+  height: 0px;
+  min-height: 100vh;
+}
+
 .ant-layout-content > div {
   height: 100%;
 }

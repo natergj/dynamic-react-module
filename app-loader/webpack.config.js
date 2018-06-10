@@ -81,6 +81,8 @@ module.exports = (env = process.env.NODE_ENV || 'production') => ({
     contentBase: path.join(__dirname, 'dist'),
     hot: false,
     port: 8050,
+    host: '0.0.0.0',
+    disableHostCheck: true,
     proxy: {
       '/app-module-1': {
         target: 'http://127.0.0.1:8051',
