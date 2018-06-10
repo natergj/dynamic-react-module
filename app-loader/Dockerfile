@@ -10,7 +10,6 @@ COPY tsconfig.dev.json .
 COPY tsconfig.prod.json .
 COPY webpack.config.js .
 COPY webpack.deps.config.js .
-COPY scripts scripts
 COPY src src
 
 ENV NODE_ENV=production

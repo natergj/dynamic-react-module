@@ -3,15 +3,36 @@ const fs = require('fs');
 const child_process = require('child_process');
 const crypto = require('crypto');
 
-module.exports = (env = process.env.NODE_ENV || 'production') => {
-  const systemJsDepMap = env === 'production' ? {
-    react: 'node_modules/react/umd/react.production.min.js',
-    'react-dom': 'node_modules/react-dom/umd/react-dom.production.min.js',
-  } : {
-    react: 'node_modules/react/umd/react.development.js',
-    'react-dom': 'node_modules/react-dom/umd/react-dom.development.js',
-  };
+module.exports = (env) => [libConfig(env), reactConfig(env)];
 
+const reactConfig = (env = process.env.NODE_ENV || 'production') => {
+  return {
+    mode: env,
+    performance: {
+      hints: false,
+    },
+    entry: {
+      react: 'react',
+      'react-dom': 'react-dom',
+    },
+    output: {
+      path: path.resolve(__dirname, 'dist'),
+      filename: '[name].[contenthash].js',
+      library: '[name]',
+      libraryTarget: 'amd',
+    },
+    plugins: [
+      new SquashBundlePlugin({
+        name: 'reactBundle'
+      }),
+      new ManifestPlugin({
+        filename: 'reactManifest.json'
+      }),
+    ]
+  }
+}
+
+const libConfig = (env = process.env.NODE_ENV || 'production') => {
   return {
     mode: env,
     performance: {
@@ -31,16 +52,11 @@ module.exports = (env = process.env.NODE_ENV || 'production') => {
     },
     externals: ['react', 'react-dom'],
     plugins: [
-      new SystemJsBundlerPlugin({
-        name: 'reactBundle',
-        dependencyMap: systemJsDepMap,
-      }),
       new SquashBundlePlugin({
         name: 'vendorBundle'
       }),
       new ManifestPlugin({
-        filename: 'depManifest.json',
-        systemJsDepMap,
+        filename: 'libManifest.json'
       }),
     ]
   };
@@ -90,7 +106,7 @@ class SquashBundlePlugin {
       const squashedSource = Object.keys(compilation.assets)
         .reduce((squash, asset) => {
           if (asset !== this.name) {
-            squash = squash + compilation.assets[asset].source();
+            squash = `${squash}\n${compilation.assets[asset].source()}`;
           }
           return squash;
         }, '');
@@ -101,45 +117,5 @@ class SquashBundlePlugin {
         size: () => squashedSource.length,
       }
     });
-  }
-}
-
-// Custom webpack plugin to create a SystemJS bundle of react and react-dom so they can be loaded as ES6 modules
-class SystemJsBundlerPlugin {
-  constructor(options) {
-    const bundlerPath = path.resolve(__dirname, 'scripts/build/SystemJsBundler.js');
-    this.bundler = child_process.fork(bundlerPath);
-
-    this.name = options.name || 'systemJsVendorBundle';
-    this.dependencyMap = options.dependencyMap || {};
-  }
-
-  apply(compiler) {
-
-    compiler.hooks.watchRun.tap('watchRun', () => {
-      this.isWatching = true;
-    });
-
-    compiler.hooks.watchClose.tap('watchClose', () => {
-      this.bundler.kill();
-    });
-
-    compiler.hooks.emit.tapAsync('createBundle', (compilation, callback) => {
-      this.bundler.send({
-        mode: compiler.options.mode,
-        inputMap: this.dependencyMap,
-      });
-      this.bundler.on('message', (bundlerOutput) => {
-        compilation.assets[`${this.name}.${bundlerOutput.hash}.js`] = {
-          source: () => bundlerOutput.source,
-          size: () => bundlerOutput.source.length,
-        };
-        if (!this.isWatching) {
-          this.bundler.kill();
-        }
-        callback();
-      });
-    });
-
   }
 }

@@ -13,13 +13,8 @@
 </head>
 <body>
   <div id="application-root" />
-  <script src="<%= systemJsAssetMap['system-production'].name %>"></script>
   <script src="<%= systemJsAssetMap['babel-polyfill'].name %>"></script>
-  <script>
-    SystemJS.config({
-      map: <%= JSON.stringify(htmlWebpackPlugin.files.dependencyManifest.systemJsDepMap) %>
-    });
-  </script>
+  <script src="<%= systemJsAssetMap['system-production'].name %>"></script>
   <script src="<%= htmlWebpackPlugin.files.dependencyManifest.assets.reactBundle %>"></script>
   <script src="<%= htmlWebpackPlugin.files.dependencyManifest.assets.vendorBundle %>"></script>
   <script src="<%= htmlWebpackPlugin.files.chunks.loader.entry %>"></script>
