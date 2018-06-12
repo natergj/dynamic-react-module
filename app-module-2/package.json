@@ -15,6 +15,9 @@
     "@types/react-dom": "16.0.6",
     "@types/react-router": "4.0.26",
     "@types/react-router-dom": "4.2.7",
+    "babel-core": "6.26.3",
+    "babel-loader": "7.1.4",
+    "babel-plugin-import": "1.7.0",
     "cheerio": "1.0.0-rc.2",
     "css-loader": "0.28.11",
     "less": "3.0.4",
@@ -27,7 +30,7 @@
     "webpack-dev-server": "3.1.4"
   },
   "dependencies": {
-    "antd": "3.6.1",
+    "antd": "2.13.14",
     "react": "16.4.0",
     "react-dom": "16.4.0",
     "react-router": "4.3.1",

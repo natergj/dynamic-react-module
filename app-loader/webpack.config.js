@@ -3,6 +3,9 @@ const fs = require('fs');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const {
+  LoadDependencyManifestPlugin,
+} = require('./build_tools/webpackPlugins');
 
 module.exports = (env = process.env.NODE_ENV || 'production') => ({
   entry: {
@@ -53,7 +56,7 @@ module.exports = (env = process.env.NODE_ENV || 'production') => ({
     // Our externals need to be bundled as well, this is done via a prebuild NPM script so that it only needs to be done once when working on the project.
     // prebuild step runs the webpack.deps.config.js config which writes a JSON file to depManifest.json so that other webpack compiler processes can access the output.
     new LoadDependencyManifestPlugin({
-      manifestFiles: ['reactManifest.json', 'libManifest.json'],
+      manifestFiles: ['libManifest.json'],
     }),
   ],
   module: {
@@ -93,32 +96,3 @@ module.exports = (env = process.env.NODE_ENV || 'production') => ({
     }
   }
 });
-
-// Custom Webpack Plugin to query for assets built via the prebuild npm script
-class LoadDependencyManifestPlugin {
-  constructor(options = {}) {
-    this.manifestFiles = options.manifestFiles;
-  }
-
-  apply(compiler) {
-    compiler.hooks.compilation.tap('AddManifestToHtmlPluginData', (compilation) => {
-      compilation.hooks.htmlWebpackPluginBeforeHtmlGeneration.tapAsync('AddManifest', (htmlPluginData, callback) => {
-        const manifest = {
-          assets: {},
-        };
-        this.manifestFiles.forEach((manifestFileName) => {
-          const manifestFile = path.resolve(compilation.outputOptions.path, manifestFileName);
-          const manifestContents = JSON.parse(fs.readFileSync(manifestFile), {
-            encoding: 'utf-8'
-          });
-          manifest.assets = {
-            ...manifestContents.assets,
-            ...manifest.assets,
-          };
-        });
-        htmlPluginData.assets.dependencyManifest = manifest;
-        callback(null, htmlPluginData);
-      });
-    })
-  }
-}

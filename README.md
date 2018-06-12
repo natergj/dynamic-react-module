@@ -33,6 +33,10 @@ A basic web app that implements components in a library provided by the App Load
 
 This project uses the following technologies
 
+- [SystemJS](https://github.com/systemjs/systemjs)
+  - [SystemJS](https://github.com/systemjs/systemjs) is used to handle the loading and registering of module
+  - This library allows for easy deletion of a registered module which is needed for hot module reloading
+  - This library allows allows for package React in such as way that it can be consumed as an ES6 module. This is necessary with React16 so that individual modules will all be able to reference the same instance of React rather than having their own.
 - Webpack
   - Webpack is used because I felt it was the most supported of all of the javascript bundlers
   - Webpack build is a dual process, first npm packages are compiled to AMD libraries and then application code is compiled as an AMD module with npm packages as externals

@@ -9,7 +9,7 @@ module.exports = {
   performance: {
     hints: false
   },
-  externals: ['react', 'react-dom', 'antd', 'moment'],
+  externals: ['react', 'react-dom', 'moment'],
   mode: process.env.NODE_ENV ? process.env.NODE_ENV : 'production',
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -23,11 +23,22 @@ module.exports = {
     rules: [{
         test: /\.tsx?$/,
         use: [{
-          loader: 'ts-loader',
-          options: {
-            configFile: process.env.NODE_ENV === 'production' ? 'tsconfig.prod.json' : 'tsconfig.dev.json',
+            loader: 'babel-loader',
+            options: {
+              plugins: [
+                ["import", {
+                  libraryName: 'antd'
+                }]
+              ]
+            }
+          },
+          {
+            loader: 'ts-loader',
+            options: {
+              configFile: process.env.NODE_ENV === 'production' ? 'tsconfig.prod.json' : 'tsconfig.dev.json',
+            }
           }
-        }]
+        ]
       },
       {
         test: /\.(css|less)$/,
