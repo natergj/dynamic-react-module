@@ -60,12 +60,11 @@ module.exports = {
     // our current app module.
     proxy: {
       '/': {
-        target: 'http://localhost:8080',
+        target: 'http://localhost:8050',
         onProxyRes: (proxyRes, req, res) => {
           if (req.url === '/') {
-            var _write = res.write;
-            var output;
-            var responseHTML = "";
+            const _write = res.write;
+            let responseHTML = "";
             proxyRes.on('data', (data) => {
               data = data.toString('utf-8');
               responseHTML += data;
@@ -100,9 +99,7 @@ module.exports = {
               `);
 
               const newResponseHTML = $.html();
-              res.set({
-                'content-length': newResponseHTML.length,
-              });
+              res.setHeader('content-length', newResponseHTML.length);
               _write.call(res, newResponseHTML);
             }
           }
