@@ -68,7 +68,14 @@ module.exports = (env = process.env.NODE_ENV || 'production') => ({
         test: /\.(css|less)$/,
         use: [
           MiniCssExtractPlugin.loader,
-          'css-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+              localIdentName: '[name]__[local]--[hash:base64:5]',
+              camelCase: 'dashes'
+            }
+          },
           {
             loader: 'less-loader',
             options: {

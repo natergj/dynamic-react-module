@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { Link, Route } from 'react-router-dom';
-import './index.less';
+const styles = require('./index.less');
 
 export class AppModule extends React.Component<any, any> {
 
   render() {
     const matchedPath = this.props.match.path;
     return (
-      <div id="app-module-1">
+      <div className={styles['app-module-1']}>
         <h1>My Incredible App Module 1</h1>
         <div>
-          <Link to={`${matchedPath}/subpath1`}>SubRouteLink</Link> | 
+          <Link to={`${matchedPath}/subpath1`}>SubRouteLink</Link> |
           <Link to={`${matchedPath}/subpath2`}>SubRouteLink2</Link>
         </div>
 
