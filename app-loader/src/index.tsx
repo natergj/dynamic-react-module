@@ -1,4 +1,5 @@
 // import less files first in order for subsequent imports to take precedence
+// tslint:disable-next-line:no-submodule-imports
 import 'antd/dist/antd.less';
 import './antStyleOverrides.less';
 
@@ -14,4 +15,4 @@ export const Run = () => {
     </HashRouter>,
     document.getElementById('application-root'),
   );
-}
+};

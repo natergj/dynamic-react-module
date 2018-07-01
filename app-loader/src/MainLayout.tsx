@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { NavLink, Route } from 'react-router-dom';
-import { Button, Icon, Layout, Menu, Tooltip } from 'antd';
+import { Icon, Layout, Menu, Tooltip } from 'antd';
 const { Header, Content, Footer, Sider } = Layout;
 import * as styles from './MainLayout.less';
 
@@ -8,19 +8,18 @@ const defaultComponent = () => (
   <div>
     <Tooltip title="MainComponent">Default Component</Tooltip>
   </div>
-)
+);
 
 export default class MainLayout extends React.Component<any, any> {
   state = {
     collapsed: false,
-    currentRoute: null,
-    currentModuleBaseRoute: null,
-    currentModuleBasePath: null,
     currentModule: defaultComponent,
+    currentModuleBasePath: null,
+    currentModuleBaseRoute: null,
+    currentRoute: null,
   };
 
   onCollapse = (collapsed) => {
-    console.log(collapsed);
     this.setState({ collapsed });
   }
 
@@ -29,10 +28,10 @@ export default class MainLayout extends React.Component<any, any> {
       const baseRoute = `/${nextProps.location.pathname.split('/')[1]}`;
       const basePath = `${baseRoute}/index.js`;
       return {
-        currentRoute: nextProps.location.pathname,
-        currentModuleBaseRoute: baseRoute,
         currentModuleBasePath: basePath,
-      }
+        currentModuleBaseRoute: baseRoute,
+        currentRoute: nextProps.location.pathname,
+      };
     }
     return null;
   }
@@ -47,8 +46,8 @@ export default class MainLayout extends React.Component<any, any> {
     .then((module) => {
       this.setState({
         currentModule: module.AppModule,
-        currentModuleBaseRoute: baseRoute,
         currentModuleBasePath: basePath,
+        currentModuleBaseRoute: baseRoute,
       });
     });
   }
@@ -76,7 +75,7 @@ export default class MainLayout extends React.Component<any, any> {
         </Header>
         <Layout>
           <Sider
-            collapsible
+            collapsible={true}
             collapsed={this.state.collapsed}
             onCollapse={this.onCollapse}
           >
@@ -96,11 +95,11 @@ export default class MainLayout extends React.Component<any, any> {
             </Menu>
           </Sider>
           <Content>
-            <Route path={this.state.currentModuleBaseRoute} component={this.state.currentModule } />
+            <Route path={this.state.currentModuleBaseRoute} component={this.state.currentModule} />
           </Content>
         </Layout>
       </Layout>
       </div>
-    )
+    );
   }
 }

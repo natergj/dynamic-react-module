@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Link, Route } from 'react-router-dom';
-const styles = require('./index.less');
+import * as styles from './index.less';
 
 export class AppModule extends React.Component<any, any> {
 
@@ -17,8 +17,8 @@ export class AppModule extends React.Component<any, any> {
         <Route path={`${matchedPath}/subpath1`} component={Subpath1Content} />
         <Route path={`${matchedPath}/subpath2`} component={Subpath2Content} />
       </div>
-    )
-  };
+    );
+  }
 }
 
 const Subpath1Content = (props) => <span>Subpath 1 content</span>;
