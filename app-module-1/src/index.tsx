@@ -3,7 +3,6 @@ import { Link, Route } from 'react-router-dom';
 import * as styles from './index.less';
 
 export class AppModule extends React.Component<any, any> {
-
   render() {
     const matchedPath = this.props.match.path;
     return (

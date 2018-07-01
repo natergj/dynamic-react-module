@@ -11,7 +11,7 @@ import MainLayout from './MainLayout';
 export const Run = () => {
   render(
     <HashRouter>
-      <Route path="/" component={MainLayout}/>
+      <Route path="/" component={MainLayout} />
     </HashRouter>,
     document.getElementById('application-root'),
   );

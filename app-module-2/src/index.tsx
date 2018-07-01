@@ -10,8 +10,8 @@ export class AppModule extends React.Component<any, any> {
           <Icon type="smile" />
         </Tooltip>
         <span>
-          Hello World from App Module 2 using a different version
-          of the ant design library than what is bundled with the app-loader!
+          Hello World from App Module 2 using a different version of the ant
+          design library than what is bundled with the app-loader!
         </span>
       </div>
     );
