@@ -2,6 +2,7 @@ import * as React from 'react';
 import { NavLink, Route } from 'react-router-dom';
 import { Button, Icon, Layout, Menu, Tooltip } from 'antd';
 const { Header, Content, Footer, Sider } = Layout;
+import * as styles from './MainLayout.less';
 
 const defaultComponent = () => (
   <div>
@@ -69,8 +70,8 @@ export default class MainLayout extends React.Component<any, any> {
   render() {
     return (
       <div id="hot-reload-target">
-      <Layout style={{ minHeight: '100vh' }}>
-        <Header style={{ background: '#fff', padding: 0 }}>
+      <Layout className={styles['main-layout']}>
+        <Header className={styles['layout-header']}>
           <span>Header Text</span>
         </Header>
         <Layout>

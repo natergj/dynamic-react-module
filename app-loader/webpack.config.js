@@ -65,7 +65,11 @@ module.exports = (env = process.env.NODE_ENV || 'production') => ({
         loader: 'ts-loader'
       },
       {
-        test: /\.(css|less)$/,
+        // Use CSS Modules for all application less imports to avoid style naming collisions with app modules
+        test: /\.less$/,
+        include: (modulePath) => {
+          return !modulePath.includes('node_modules') && !modulePath.includes('antStyleOverrides');
+        },
         use: [
           MiniCssExtractPlugin.loader,
           {
@@ -73,9 +77,27 @@ module.exports = (env = process.env.NODE_ENV || 'production') => ({
             options: {
               modules: true,
               localIdentName: '[name]__[local]--[hash:base64:5]',
-              camelCase: 'dashes'
+              camelCase: 'dashes',
             }
           },
+          {
+            loader: 'less-loader',
+            options: {
+              sourceMap: true,
+              javascriptEnabled: true,
+            },
+          },
+        ],
+      },
+      {
+        // Disable CSS Modules for all vendor less imports and override files
+        test: /\.(css|less)$/,
+        include: (modulePath) => {
+          return modulePath.includes('node_modules') || modulePath.includes('antStyleOverrides');
+        },
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
           {
             loader: 'less-loader',
             options: {
