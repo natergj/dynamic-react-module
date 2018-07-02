@@ -9,7 +9,7 @@ const {
 
 module.exports = (env = process.env.NODE_ENV || 'production') => ({
   entry: {
-    loader: './src/index.tsx',
+    loader: './src/loader.ts',
   },
   // externals are libraries provided to the web application so they don't need to bundle them in the final package
   externals: ['react', 'react-dom', 'antd', 'moment', 'react-router', 'react-router-dom'],
@@ -62,7 +62,10 @@ module.exports = (env = process.env.NODE_ENV || 'production') => ({
   module: {
     rules: [{
         test: /\.tsx?$/,
-        loader: 'ts-loader'
+        loader: 'ts-loader',
+        options: {
+          configFile: env === 'development' ? 'tsconfig.dev.json' : 'tsconfig.prod.json',
+        }
       },
       {
         // Use CSS Modules for all application less imports to avoid style naming collisions with app modules
@@ -109,6 +112,7 @@ module.exports = (env = process.env.NODE_ENV || 'production') => ({
       },
     ],
   },
+  devtool: env === 'development' ? 'source-map' : 'none',
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
     hot: false,

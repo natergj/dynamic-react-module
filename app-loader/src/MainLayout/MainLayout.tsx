@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { NavLink, Route } from 'react-router-dom';
 import { Icon, Layout, Menu, Tooltip } from 'antd';
-const { Header, Content, Footer, Sider } = Layout;
+import reducerRegistry from '../redux/reducerRegistry';
+const { Header, Content, Sider } = Layout;
 import * as styles from './MainLayout.less';
 
 const defaultComponent = () => (
@@ -43,6 +44,11 @@ export default class MainLayout extends React.Component<any, any> {
     }
     const basePath = `${baseRoute}/index.js`;
     SystemJS.import(basePath).then((module) => {
+      if (module.reducers) {
+        module.reducers.forEach((reducer) => {
+          reducerRegistry.register(reducer.name, reducer.reducer);
+        });
+      }
       this.setState({
         currentModule: module.AppModule,
         currentModuleBasePath: basePath,
@@ -52,6 +58,7 @@ export default class MainLayout extends React.Component<any, any> {
   }
 
   componentDidMount() {
+    this.props.setUserId('10');
     this.setState(
       {
         currentRoute: this.props.location.pathname,
@@ -73,7 +80,7 @@ export default class MainLayout extends React.Component<any, any> {
       <div id="hot-reload-target">
         <Layout className={styles['main-layout']}>
           <Header className={styles['layout-header']}>
-            <span>Header Text</span>
+            <span>Logged in as user {this.props.userId}</span>
           </Header>
           <Layout>
             <Sider

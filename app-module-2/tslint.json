@@ -5,8 +5,10 @@
     "jsx-wrap-multiline": false,
     "member-access": false,
     "member-ordering": false,
+    "object-literal-sort-keys": false,
     "ordered-imports": false,
     "quotemark": [true, "single", "jsx-double"],
-    "semicolon": [true, "always", "ignore-bound-class-methods"]
+    "semicolon": [true, "always", "ignore-bound-class-methods"],
+    "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore", "allow-pascal-case" ]
   }
 }
