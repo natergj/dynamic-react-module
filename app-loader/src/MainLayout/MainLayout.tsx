@@ -5,6 +5,8 @@ import reducerRegistry from '../redux/reducerRegistry';
 const { Header, Content, Sider } = Layout;
 import * as styles from './MainLayout.less';
 
+declare var System: any;
+
 const defaultComponent = () => (
   <div>
     <Tooltip title="MainComponent">Default Component</Tooltip>
@@ -43,14 +45,15 @@ export default class MainLayout extends React.Component<any, any> {
       return;
     }
     const basePath = `${baseRoute}/index.js`;
-    SystemJS.import(basePath).then((module) => {
-      if (module.reducers) {
-        module.reducers.forEach((reducer) => {
+    System.import(basePath).then((module) => {
+      const { reducers, AppModule } = module.default;
+      if (reducers) {
+        reducers.forEach((reducer) => {
           reducerRegistry.register(reducer.name, reducer.reducer);
         });
       }
       this.setState({
-        currentModule: module.AppModule,
+        currentModule: AppModule,
         currentModuleBasePath: basePath,
         currentModuleBaseRoute: baseRoute,
       });

@@ -2,32 +2,39 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <% const systemJsAssetMap = webpack.assets.reduce((prev, lib) => {
-      const libName = lib.name.split('.').slice(0, -2);
-      prev[libName] = lib;
-      return prev;
-    }, {}); %>  
-    
-    <% htmlWebpackPlugin.files.css.forEach((asset) => { %>
-  <link rel="stylesheet" href="<%= asset %>" />  
+  <meta charset="UTF-8">
+  <script type="systemjs-packagemap">
+  <%
+  const packageMap = { packages: {} };
+  const assetMap = {};
+  webpack.assets.forEach((asset) => {
+    const libName = asset.name.split('.')[0];
+    assetMap[libName] = asset.name;
+    if (asset.name.split('.').slice(-1)[0] !== 'map') {
+      packageMap.packages[libName] = {
+        "main": asset.name,
+        "path": "./"
+      }
+    }
+    return packageMap;
+  });
+  %>
+  <%= JSON.stringify(packageMap) %>
+  </script>
+
+  <script src="<%= assetMap.systemjs %>"></script>
+  <script src="<%= assetMap.amd %>"></script>
+  <script>
+    System.import('./loader.js').then(loader => {
+      console.log(loader);
+      loader.default.Run()
+    });
+  </script>
+  <% htmlWebpackPlugin.files.css.forEach((asset) => { %>
+  <link rel="stylesheet" href="<%= asset %>" />
   <% }) %>
 </head>
 <body>
   <div id="application-root" />
-  <script src="<%= systemJsAssetMap['system-production'].name %>"></script>
-  <script src="<%= systemJsAssetMap['babel-polyfill'].name %>"></script>
-  <script>
-    SystemJS.config({
-      map: <%= JSON.stringify(htmlWebpackPlugin.files.dependencyManifest.systemJsDepMap) %>
-    });
-  </script>
-  <script src="<%= htmlWebpackPlugin.files.dependencyManifest.assets.reactBundle %>"></script>
-  <script src="<%= htmlWebpackPlugin.files.dependencyManifest.assets.vendorBundle %>"></script>
-  <script src="<%= htmlWebpackPlugin.files.chunks.loader.entry %>"></script>
-  <script>
-    SystemJS.import('loader').then((loader) => {
-      loader.Run();
-    });
-  </script>
 </body>
 </html>
