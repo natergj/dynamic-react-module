@@ -1,4 +1,4 @@
-FROM node:8.11.2-alpine as build
+FROM node:10.13.0-alpine as build
 WORKDIR build
 COPY .npmrc .
 COPY package.json .
@@ -14,7 +14,7 @@ COPY src src
 ENV NODE_ENV=production
 RUN npm run build
 
-FROM nginx:1.13.8-alpine
+FROM nginx:1.15.6-alpine
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 COPY --from=build /build/dist /usr/share/nginx/html
