@@ -9,7 +9,7 @@ module.exports = {
   performance: {
     hints: false
   },
-  externals: ['loader', 'react', 'react-dom', 'moment'],
+  externals: ['loader', 'react', 'react-dom', 'moment', 'antd'],
   mode: process.env.NODE_ENV ? process.env.NODE_ENV : 'production',
   output: {
     path: path.resolve(__dirname, 'dist'),
