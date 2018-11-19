@@ -22,15 +22,12 @@ module.exports = {
   module: {
     rules: [{
         test: /\.tsx?$/,
+        exclude: /node_modules/,
         use: [{
             loader: 'babel-loader',
             options: {
-              plugins: [
-                ["import", {
-                  libraryName: 'antd'
-                }]
-              ]
-            }
+              presets: ['@babel/preset-env']
+            },
           },
           {
             loader: 'ts-loader',

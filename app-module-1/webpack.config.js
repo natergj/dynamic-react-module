@@ -23,11 +23,18 @@ module.exports = {
     rules: [{
         test: /\.tsx?$/,
         use: [{
-          loader: 'ts-loader',
-          options: {
-            configFile: process.env.NODE_ENV === 'production' ? 'tsconfig.prod.json' : 'tsconfig.dev.json',
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env']
+            },
+          },
+          {
+            loader: 'ts-loader',
+            options: {
+              configFile: process.env.NODE_ENV === 'production' ? 'tsconfig.prod.json' : 'tsconfig.dev.json',
+            }
           }
-        }]
+        ]
       },
       {
         test: /\.(css|less)$/,
